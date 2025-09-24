@@ -531,12 +531,12 @@ const Portfolio = () => {
       <nav className="fixed top-0 w-full z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50">
         <div className="w-full px-6 py-4">
           <div className="flex justify-between items-center">
-<button 
-  onClick={() => scrollToSection('hero')}
-  className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent focus:outline-none"
->
-  DobraiDávid
-</button>
+            <button 
+              onClick={() => scrollToSection('hero')}
+              className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent focus:outline-none"
+            >
+              DobraiDávid
+            </button>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex space-x-8">
                 <button onClick={() => scrollToSection('hero')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.home}</button>
