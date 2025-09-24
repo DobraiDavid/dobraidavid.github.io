@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Github, ExternalLink, Code, Database, Brain, Gamepad2, Leaf, Home, Mail, MapPin, Calendar, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, X, Send, User, MessageSquare, Phone, Globe } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -17,44 +18,76 @@ const Portfolio = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const scrollContainerRef = useRef(null);
 
-    useEffect(() => {
+  useEffect(() => {
     setIsLoaded(true);
-    
-    const sections = ['hero', 'projects', 'skills', 'contact'];
+
+    // Include project sub-sections in the sections array
+    const sections = ['hero', 'project-1', 'project-2', 'project-3', 'skills', 'contact'];
 
     const handleScroll = () => {
-        const scrollPosition = window.scrollY + window.innerHeight / 3;
-        let currentSection = sections[0];
+      const scrollContainer = scrollContainerRef.current;
+      if (!scrollContainer) return;
 
-        for (let i = 0; i < sections.length; i++) {
-        const sectionId = sections[i];
-        const sectionEl = document.getElementById(sectionId);
-        if (!sectionEl) continue;
+      const scrollPosition = scrollContainer.scrollTop + 100; // Small offset for nav bar
 
-        const sectionTop = sectionEl.offsetTop;
-        const sectionBottom = sectionTop + sectionEl.offsetHeight;
+      let currentSection = 'hero';
+      let minDistance = Infinity;
 
-        // Check if scroll position is within this section
-        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+      sections.forEach((sectionId) => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementTop = rect.top + scrollContainer.scrollTop;
+          const distance = Math.abs(scrollPosition - elementTop);
+
+          if (distance < minDistance) {
+            minDistance = distance;
             currentSection = sectionId;
-            break;
+          }
         }
+      });
+
+      // Map project sections to 'projects' for navigation dot
+      setActiveSection((prev) => {
+        if (['project-1', 'project-2', 'project-3'].includes(currentSection)) {
+          currentSection = 'projects';
         }
+        return prev !== currentSection ? currentSection : prev;
+      });
 
-        setActiveSection(currentSection);
+      console.log('Active Section:', currentSection); // Debug log
 
-        // Scroll progress
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        setScrollProgress((scrollTop / docHeight) * 100);
+      // Update scroll progress
+      const scrollTop = scrollContainer.scrollTop;
+      const docHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+      setScrollProgress((scrollTop / docHeight) * 100);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // initialize active section
-    console.log(activeSection)
-    return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    let scrollTimeout;
+    const throttledHandleScroll = () => {
+      if (!scrollTimeout) {
+        scrollTimeout = setTimeout(() => {
+          handleScroll();
+          scrollTimeout = null;
+        }, 100);
+      }
+    };
+
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', throttledHandleScroll, { passive: true });
+      handleScroll();
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', throttledHandleScroll);
+      }
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+    };
+  }, []);
 
   // Translation object with complete translations
   const translations = {
@@ -112,7 +145,7 @@ const Portfolio = () => {
           name: "Your Name",
           email: "Your Email",
           subject: "Subject",
-          message: "Tell me about your project...",
+          message: "Leave your message...",
           send: "Send Message",
           sending: "Sending...",
           success: "Message sent successfully! I'll get back to you soon.",
@@ -215,10 +248,11 @@ const Portfolio = () => {
       githubUrl: "https://github.com/DobraiDavid/PropertySeller", 
       highlight: t.projects[0].highlight,
       images: [
-        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+        "./EstateHub1.png",
+        "./EstateHub2.png",
+        "./EstateHub3.png",
+        "./EstateHub4.png",
+        "./EstateHub5.png",
       ]
     },
     {
@@ -233,10 +267,11 @@ const Portfolio = () => {
       githubUrl: "https://github.com/DobraiDavid/HostedPlantPlanet", 
       highlight: t.projects[1].highlight,
       images: [
-        "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1485955900006-10f4d324d411?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1518335935020-cfd9a5b2bb1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+        "./PlantPlanet1.png",
+        "./PlantPlanet2.png",
+        "./PlantPlanet3.png",
+        "./PlantPlanet4.png",
+        "./PlantPlanet5.png",        
       ]
     },
     {
@@ -251,10 +286,8 @@ const Portfolio = () => {
       githubUrl: "https://github.com/DobraiDavid/FlappyBirdAI", 
       highlight: t.projects[2].highlight,
       images: [
-        "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+        "./FlappyBird1.png",
+        "./FlappyBird2.png",
       ]
     }
   ];
@@ -286,9 +319,22 @@ const Portfolio = () => {
     setSubmitStatus('');
 
     try {
-      // Simulate API call for demo
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      await emailjs.send(
+        serviceID,
+        templateID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        },
+        publicKey
+      );
+
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
@@ -327,24 +373,20 @@ const Portfolio = () => {
     setModalImage('');
   };
 
-    const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-        // Update active section immediately
-        setActiveSection(sectionId);
-        
-        // Scroll to the section
-        element.scrollIntoView({ 
+      setActiveSection(sectionId);
+      element.scrollIntoView({ 
         behavior: 'smooth',
         block: 'start'
-        });
-
-        // Fallback: update again after scroll completes
-        setTimeout(() => {
+      });
+      setTimeout(() => {
         setActiveSection(sectionId);
-        }, 300);
+      }, 300);
     }
-    };
+  };
+
   const navItems = [
     { id: 'hero', label: t.nav.home, icon: <Home className="w-4 h-4" /> },
     { id: 'projects', label: t.nav.projects, icon: <Code className="w-4 h-4" /> },
@@ -353,21 +395,29 @@ const Portfolio = () => {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden" style={{ scrollSnapType: 'y proximity', height: '100vh', overflowY: 'scroll' }}>
+    <div
+      ref={scrollContainerRef}
+      className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden"
+      style={{ scrollSnapType: 'y mandatory', height: '100vh', overflowY: 'scroll' }}
+    >
       {/* Image Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4" onClick={closeModal}>
-          <div className="relative max-w-6xl max-h-full">
+        <div
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          <div className="relative w-full h-full flex items-center justify-center">
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors z-10"
+              className="absolute top-6 right-6 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors z-10"
             >
-              <X className="w-6 h-6" />
+              <X className="w-7 h-7" />
             </button>
+
             <img
               src={modalImage}
               alt="Full size"
-              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              className="max-w-[95vw] max-h-[95vh] object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
@@ -387,9 +437,7 @@ const Portfolio = () => {
         {navItems.map((item, index) => (
           <div key={item.id} className="group flex items-center">
             <div 
-              className={`opacity-0 group-hover:opacity-100 transition-all duration-300 mr-3 px-3 py-2 bg-slate-800/90 backdrop-blur rounded-lg border border-slate-600/50 text-sm whitespace-nowrap ${
-                activeSection === item.id ? 'opacity-100' : ''
-              }`}
+              className="opacity-0 group-hover:opacity-100 transition-all duration-300 mr-3 px-3 py-2 bg-slate-800/90 backdrop-blur rounded-lg border border-slate-600/50 text-sm whitespace-nowrap"
             >
               {item.label}
             </div>
@@ -426,10 +474,10 @@ const Portfolio = () => {
             </div>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex space-x-8">
-                <button onClick={() => scrollToSection('hero')} className="text-white hover:text-cyan-400 transition-colors">{t.nav.home}</button>
-                <button onClick={() => scrollToSection('projects')} className="text-white hover:text-cyan-400 transition-colors">{t.nav.projects}</button>
-                <button onClick={() => scrollToSection('skills')} className="text-white hover:text-cyan-400 transition-colors">{t.nav.skills}</button>
-                <button onClick={() => scrollToSection('contact')} className="text-white hover:text-cyan-400 transition-colors">{t.nav.contact}</button>
+                <button onClick={() => scrollToSection('hero')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.home}</button>
+                <button onClick={() => scrollToSection('projects')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.projects}</button>
+                <button onClick={() => scrollToSection('skills')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.skills}</button>
+                <button onClick={() => scrollToSection('contact')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.contact}</button>
               </div>
               <button
                 onClick={toggleLanguage}
@@ -481,14 +529,19 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Projects */}
-      <div id="projects">
+      {/* Projects Section */}
+      <section id="projects">
         {projects.map((project, index) => (
-          <section key={project.id} className="min-h-screen py-20 relative flex items-center" style={{ scrollSnapAlign: 'start' }}>
+          <section
+            key={project.id}
+            id={`project-${project.id}`}
+            className="min-h-screen py-20 relative flex items-center"
+            style={{ scrollSnapAlign: 'start' }}
+          >
             <div className="w-full max-w-7xl mx-auto px-6">
               <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 min-h-[70vh]`}>
                 {/* Project Info */}
-                <div className="lg:w-1/2 space-y-8">
+                <div className="lg:w-2/5 space-y-8">
                   <div className="flex items-center space-x-4">
                     <div className={`p-4 bg-gradient-to-r ${project.color} rounded-xl`}>
                       {project.icon}
@@ -528,16 +581,19 @@ const Portfolio = () => {
                       href={project.tryItUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg"
+                      className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
                     >
                       <ExternalLink className="w-5 h-5 mr-2" />
-                      {language === 'en' ? 'Try It Out' : 'Kipróbálás'}
+                      {project.id === 3 
+                        ? language === 'en' ? 'Watch it on Video' : 'Nézd meg videón' 
+                        : language === 'en' ? 'Try It Out' : 'Kipróbálás'}
                     </a>
+
                     <a 
                       href={project.githubUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-8 py-4 bg-slate-800 border border-slate-600 rounded-lg font-semibold text-white hover:bg-slate-700 hover:border-slate-500 hover:shadow-xl transition-all duration-300 text-lg"
+                      className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-slate-800 border border-slate-600 rounded-lg font-semibold text-white hover:bg-slate-700 hover:border-slate-500 hover:shadow-xl transition-all duration-300 text-lg text-center"
                     >
                       <Github className="w-5 h-5 mr-2" />
                       {language === 'en' ? 'View on GitHub' : 'GitHub-on megtekintés'}
@@ -545,11 +601,11 @@ const Portfolio = () => {
                   </div>
                 </div>
                 
-                {/* Enhanced Project Gallery - Made Bigger */}
-                <div className="lg:w-1/2">
+                {/* Enhanced Project Gallery */}
+                <div className="lg:w-3/5">
                   <div className={`relative p-8 bg-gradient-to-br ${project.color} rounded-3xl shadow-2xl`}>
                     <div className="bg-slate-900/90 backdrop-blur rounded-2xl p-8 relative overflow-hidden">
-                      <div className="relative h-96 lg:h-[500px] rounded-xl overflow-hidden group">
+                      <div className="relative w-full aspect-[2547/1616] h-full rounded-xl overflow-hidden group">
                         <img 
                           src={project.images[activeImageIndex[project.id] || 0]}
                           alt={`${project.title} screenshot ${(activeImageIndex[project.id] || 0) + 1}`}
@@ -604,7 +660,7 @@ const Portfolio = () => {
             </div>
           </section>
         ))}
-      </div>
+      </section>
 
       {/* Skills Section */}
       <section id="skills" className="min-h-screen py-20 bg-slate-900/50 flex items-center" style={{ scrollSnapAlign: 'start' }}>
