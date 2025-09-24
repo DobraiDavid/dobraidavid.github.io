@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Github, ExternalLink, Code, Database, Brain, Gamepad2, Leaf, Home, Mail, MapPin, Calendar, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, X, Send, User, MessageSquare, Phone, Globe } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Github, ExternalLink, Code, Database, Brain, Leaf, Home, Mail, MapPin, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, X, Send, User, MessageSquare} from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 const Portfolio = () => {
@@ -18,19 +18,20 @@ const Portfolio = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
   const scrollContainerRef = useRef(null);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     setIsLoaded(true);
 
-    // Include project sub-sections in the sections array
     const sections = ['hero', 'project-1', 'project-2', 'project-3', 'skills', 'contact'];
 
     const handleScroll = () => {
       const scrollContainer = scrollContainerRef.current;
       if (!scrollContainer) return;
 
-      const scrollPosition = scrollContainer.scrollTop + 100; // Small offset for nav bar
+      const scrollPosition = scrollContainer.scrollTop + 100;
 
       let currentSection = 'hero';
       let minDistance = Infinity;
@@ -49,7 +50,6 @@ const Portfolio = () => {
         }
       });
 
-      // Map project sections to 'projects' for navigation dot
       setActiveSection((prev) => {
         if (['project-1', 'project-2', 'project-3'].includes(currentSection)) {
           currentSection = 'projects';
@@ -57,9 +57,6 @@ const Portfolio = () => {
         return prev !== currentSection ? currentSection : prev;
       });
 
-      console.log('Active Section:', currentSection); // Debug log
-
-      // Update scroll progress
       const scrollTop = scrollContainer.scrollTop;
       const docHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight;
       setScrollProgress((scrollTop / docHeight) * 100);
@@ -89,7 +86,7 @@ const Portfolio = () => {
     };
   }, []);
 
-  // Translation object with complete translations
+  // Translation
   const translations = {
     en: {
       nav: {
@@ -140,7 +137,7 @@ const Portfolio = () => {
       },
       contact: {
         title: "Let's Build Something Amazing Together",
-        subtitle: "Ready to bring your next project to life? I'm excited to discuss how my skills and passion for development can contribute to your team's success.",
+        subtitle: "My goal is to contribute to our shared success with my knowledge and dedication",
         form: {
           name: "Your Name",
           email: "Your Email",
@@ -171,61 +168,61 @@ const Portfolio = () => {
       hero: {
         greeting: "Szia, Dobrai Dávid vagyok,",
         title: "Full-Stack Fejlesztő",
-        subtitle: "Innovatív webes megoldások építése modern technológiákkal és mesterséges intelligencia integrációval",
+        subtitle: "Innovatív webes megoldásokat készítek modern technológiákkal és mesterséges intelligenciával",
         viewWork: "Munkáim megtekintése",
         tags: {
-          frontend: "React és Angular",
-          database: "Adatbázis Architekt",
-          backend: "Java és PHP"
+          frontend: "React & Angular",
+          database: "Adatbázis-tervezés",
+          backend: "Java & PHP"
         }
       },
       projects: [
         {
-          title: "Ingatlan Hub",
-          description: "Átfogó ingatlanhirdetési platform fejlett keresési szűrőkkel, ingatlan részletekkel és felhasználó kezeléssel. Reszponzív design, ingatlan képgalériák és integrált kapcsolati űrlapok.",
+          title: "EstateHub",
+          description: "Átfogó ingatlanhirdetési platform fejlett keresési szűrőkkel, részletes ingatlanadatokkal és felhasználókezeléssel. Reszponzív felület, képgalériák és integrált cím alapú helymeghatározás.",
           highlight: "Full-Stack Webfejlesztés",
-          features: ["Ingatlan keresés és szűrők", "Képgalériák", "Felhasználó hitelesítés", "Reszponzív design", "Kapcsolat kezelés"]
+          features: ["Ingatlan keresés és szűrők", "Képgalériák", "Felhasználói hitelesítés", "Reszponzív felület", "Kapcsolatkezelés"]
         },
         {
           title: "PlantPlanet",
-          description: "E-kereskedelmi platform növénykedvelőknek előfizetési szolgáltatásokkal, gondozási tippekkel és átfogó növény adatbázissal. Modern architektúrával és robusztus adatbázis tervezéssel.",
-          highlight: "Összetett Adatbázis Architektúra",
-          features: ["E-kereskedelmi platform", "Előfizetés kezelés", "AI támogatási bot", "E-mail értesítések", "Reszponzív design"]
+          description: "E-kereskedelmi platform növénykedvelőknek előfizetési lehetőségekkel, gondozási tippekkel és részletes növényadatbázissal. Modern architektúra és megbízható adatbázis-tervezés.",
+          highlight: "Komplex adatbázis-architektúra",
+          features: ["E-kereskedelmi platform", "Előfizetés-kezelés", "AI Support bot", "E-mail értesítések", "Reszponzív felület"]
         },
         {
           title: "AI FlappyBird",
-          description: "Python-alapú FlappyBird játék integrált NEAT AI-val, amely megtanulja önállóan játszani. Gépi tanulási elveket és játékfejlesztési készségeket demonstrál.",
-          highlight: "Mesterséges Intelligencia és Gépi Tanulás",
-          features: ["Játékfejlesztés", "AI képzés", "Neurális hálózatok", "Valós idejű tanulás", "Teljesítmény analitika"]
+          description: "Python-alapú FlappyBird játék integrált NEAT AI-val, ami önállóan tanul játszani. Bemutatja a gépi tanulás és a játékfejlesztés alapelveit.",
+          highlight: "Mesterséges intelligencia és gépi tanulás",
+          features: ["Játékfejlesztés", "AI képzés", "Neurális hálózatok", "Valós idejű tanulás", "Teljesítmény-analitika"]
         }
       ],
       skills: {
-        title: "Technikai Készségek",
+        title: "Technikai készségek",
         categories: {
           frontend: "Frontend",
           backend: "Backend",
           database: "Adatbázis",
-          tools: "Eszközök és egyebek"
+          tools: "Egyebek"
         }
       },
       contact: {
-        title: "Építsünk fel valamit csodálatosat közösen",
-        subtitle: "Készen állsz a következő projekted megvalósítására? Izgatottan várom, hogy megbeszéljük, hogyan járulhatnak hozzá készségeim és fejlesztői szenvedélyem csapatod sikeréhez.",
+        title: "Dolgozzunk együtt valami igazán nagyszerűn",
+        subtitle: "Célom, hogy tudásommal és elhivatottságommal hozzájáruljak a közös sikerhez",
         form: {
           name: "Neved",
           email: "E-mail címed",
           subject: "Tárgy",
-          message: "Mesélj a projektedről...",
+          message: "Írd meg üzeneted...",
           send: "Üzenet küldése",
           sending: "Küldés...",
-          success: "Üzenet sikeresen elküldve! Hamarosan válaszolok.",
-          error: "Nem sikerült elküldeni az üzenetet. Kérlek próbáld újra."
+          success: "Az üzenet sikeresen elküldve! Hamarosan válaszolok.",
+          error: "Az üzenet küldése sikertelen. Kérlek, próbáld újra."
         },
         info: {
-          title: "Vedd fel velem a kapcsolatot",
-          email: "dobrai.david@example.com",
+          title: "Elérhetőségeim",
+          email: "dobraidavid5@gmail.com",
           location: "Nyíregyháza, Magyarország",
-          availability: "Elérhető új lehetőségekhez",
+          availability: "Elérhető új projektekhez",
           response: "Általában 24 órán belül válaszolok"
         },
         github: "Összes projekt megtekintése a GitHub-on"
@@ -346,6 +343,34 @@ const Portfolio = () => {
     }
   };
 
+  //Video
+  const openVideo = () => {
+    setIsVideoOpen(true);
+  };
+
+  const closeVideo = () => {
+    setIsVideoOpen(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  };
+
+  // Handle video play when modal opens
+  useEffect(() => {
+    if (isVideoOpen && videoRef.current) {
+      const playVideo = async () => {
+        try {
+          await videoRef.current.play();
+        } catch (error) {
+          console.log('Autoplay prevented:', error);
+        }
+      };
+      
+      playVideo();
+    }
+  }, [isVideoOpen]);
+
   // Image gallery functions
   const nextImage = (projectId) => {
     const project = projects.find(p => p.id === projectId);
@@ -424,6 +449,40 @@ const Portfolio = () => {
         </div>
       )}
 
+      {/* Video Modal */}
+      {isVideoOpen && (
+        <div
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4"
+          onClick={closeVideo}
+        >
+          <div className="relative w-full h-full flex items-center justify-center">
+            <button
+              onClick={closeVideo}
+              className="absolute top-6 right-6 text-white bg-black/50 rounded-full p-3 hover:bg-black/70 transition-colors z-10"
+            >
+              <X className="w-7 h-7" />
+            </button>
+
+            <div 
+              className="max-w-[95vw] max-h-[95vh] rounded-lg overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <video
+                ref={videoRef}
+                controls
+                muted 
+                className="w-full h-full object-contain"
+                preload="metadata" 
+                playsInline 
+              >
+                <source src="/videos/FlappyBirdVideo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Scroll Progress Indicator */}
       <div className="fixed top-0 left-0 w-full h-1 bg-slate-800 z-50">
         <div 
@@ -432,27 +491,30 @@ const Portfolio = () => {
         />
       </div>
 
-      {/* Enhanced Navigation Dots */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 space-y-4">
-        {navItems.map((item, index) => (
-          <div key={item.id} className="group flex items-center">
-            <div 
-              className="opacity-0 group-hover:opacity-100 transition-all duration-300 mr-3 px-3 py-2 bg-slate-800/90 backdrop-blur rounded-lg border border-slate-600/50 text-sm whitespace-nowrap"
-            >
+      {/* Navigation Dots */}
+      <div
+        className="fixed top-1/2 -translate-y-1/2 z-50 flex flex-col items-end space-y-4"
+        style={{ right: '30px' }}
+      >
+        {navItems.map((item) => (
+          <div key={item.id} className="group relative flex items-center justify-end">
+            <div className="absolute right-full mr-3 opacity-0 group-hover:opacity-100 transition-all duration-300 px-3 py-2 bg-slate-800/90 backdrop-blur rounded-lg border border-slate-600/50 text-sm whitespace-nowrap">
               {item.label}
             </div>
             <button
               onClick={() => scrollToSection(item.id)}
               className={`relative w-4 h-4 rounded-full transition-all duration-300 group ${
-                activeSection === item.id 
-                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 scale-125' 
+                activeSection === item.id
+                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 scale-125'
                   : 'bg-slate-600 hover:bg-slate-500 hover:scale-110'
               }`}
               title={item.label}
             >
-              <div className={`absolute inset-0 rounded-full ${
-                activeSection === item.id ? 'animate-ping bg-cyan-400/50' : ''
-              }`} />
+              <div
+                className={`absolute inset-0 rounded-full ${
+                  activeSection === item.id ? 'animate-ping bg-cyan-400/50' : ''
+                }`}
+              />
             </button>
           </div>
         ))}
@@ -469,9 +531,12 @@ const Portfolio = () => {
       <nav className="fixed top-0 w-full z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50">
         <div className="w-full px-6 py-4">
           <div className="flex justify-between items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              DobraiDávid
-            </div>
+<button 
+  onClick={() => scrollToSection('hero')}
+  className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent focus:outline-none"
+>
+  DobraiDávid
+</button>
             <div className="flex items-center space-x-8">
               <div className="hidden md:flex space-x-8">
                 <button onClick={() => scrollToSection('hero')} className="text-white transition-transform duration-200 transform hover:scale-110 border-none">{t.nav.home}</button>
@@ -577,17 +642,25 @@ const Portfolio = () => {
                   </div>
                   
                   <div className="flex flex-wrap gap-6 pt-6">
-                    <a 
-                      href={project.tryItUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
-                    >
-                      <ExternalLink className="w-5 h-5 mr-2" />
-                      {project.id === 3 
-                        ? language === 'en' ? 'Watch it on Video' : 'Nézd meg videón' 
-                        : language === 'en' ? 'Try It Out' : 'Kipróbálás'}
-                    </a>
+                    {project.id === 3 ? (
+                      <button 
+                        onClick={openVideo}
+                        className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
+                      >
+                        <ExternalLink className="w-5 h-5 mr-2" />
+                        {language === 'en' ? 'Watch Demo Video' : 'Nézd meg a demót'}
+                      </button>
+                    ) : (
+                      <a 
+                        href={project.tryItUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
+                      >
+                        <ExternalLink className="w-5 h-5 mr-2" />
+                        {language === 'en' ? 'Try It Out' : 'Próbáld ki'}
+                      </a>
+                    )}
 
                     <a 
                       href={project.githubUrl} 
@@ -596,12 +669,12 @@ const Portfolio = () => {
                       className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-slate-800 border border-slate-600 rounded-lg font-semibold text-white hover:bg-slate-700 hover:border-slate-500 hover:shadow-xl transition-all duration-300 text-lg text-center"
                     >
                       <Github className="w-5 h-5 mr-2" />
-                      {language === 'en' ? 'View on GitHub' : 'GitHub-on megtekintés'}
+                      {language === 'en' ? 'View on GitHub' : 'Nézd meg GitHub-on'}
                     </a>
                   </div>
                 </div>
                 
-                {/* Enhanced Project Gallery */}
+                {/* Project Gallery */}
                 <div className="lg:w-3/5">
                   <div className={`relative p-8 bg-gradient-to-br ${project.color} rounded-3xl shadow-2xl`}>
                     <div className="bg-slate-900/90 backdrop-blur rounded-2xl p-8 relative overflow-hidden">
@@ -687,13 +760,13 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Enhanced Contact Section */}
+      {/* Contact Section */}
       <section id="contact" className="min-h-screen py-20 flex items-center relative overflow-hidden" style={{ scrollSnapAlign: 'start' }}>
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-purple-900/90 to-slate-900/90"></div>
         <div className="relative w-full px-6">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 pb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 {t.contact.title}
               </h2>
               <p className="text-xl md:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed">
@@ -808,7 +881,7 @@ const Portfolio = () => {
                       </div>
                       <div>
                         <h4 className="text-slate-300 font-medium mb-1">{language === 'en' ? 'Email' : 'E-mail'}</h4>
-                        <a href="mailto:dobrai.david@example.com" className="text-white hover:text-cyan-400 transition-colors text-lg">
+                        <a className="text-white hover:text-cyan-400 transition-colors text-lg">
                           {t.contact.info.email}
                         </a>
                       </div>
@@ -840,11 +913,11 @@ const Portfolio = () => {
                 {/* GitHub CTA */}
                 <div className="bg-gradient-to-br from-slate-800/60 to-slate-700/60 backdrop-blur-md rounded-3xl pt-4 border border-slate-700/50 text-center pb-5">
                   <Github className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold mb-3 text-white">{language === 'en' ? 'Explore My Work' : 'Fedezd fel munkáimat'}</h3>
+                  <h3 className="text-xl font-bold mb-3 text-white">{language === 'en' ? 'Explore My Work' : 'Projekteim'}</h3>
                   <p className="text-slate-300 mb-6">
                     {language === 'en' 
                       ? 'Check out all my projects and contributions on GitHub' 
-                      : 'Nézd meg összes projektemet és hozzájárulásaimat a GitHub-on'
+                      : 'Nézd meg összes projekteimet a GitHub-on'
                     }
                   </p>
                   <a 
