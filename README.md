@@ -1,12 +1,43 @@
-# React + Vite
+# Portfolio Website - Dobrai Dávid
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive portfolio website built with React, featuring smooth animations, multilingual support, and interactive project showcases.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ✨ Interactive Design
+- **Smooth Scroll Navigation** - One-page layout with scroll snapping
+- **Animated Background** - Dynamic gradient particles and floating elements
+- **Scroll Progress Indicator** - Visual progress bar showing scroll position
+- **Navigation Dots** - Fixed sidebar navigation with hover effects
 
-## Expanding the ESLint configuration
+### 🌍 Multilingual Support
+- **English/Hungarian Toggle** - Full translation support
+- **Dynamic Content** - All text content switches seamlessly between languages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 📱 Responsive Layout
+- **Mobile-First Design** - Optimized for all screen sizes
+- **Flexible Grid System** - Adapts to different viewports
+- **Touch-Friendly** - Optimized for mobile interactions
+
+### 🎯 Project Showcase
+- **Interactive Galleries** - Image carousels with modal preview
+- **Video Demos** - Embedded video presentations
+- **Live Demo Links** - Direct links to hosted projects
+- **GitHub Integration** - Source code access for each project
+
+### 📧 Contact System
+- **EmailJS Integration** - Functional contact form
+- **Form Validation** - Client-side validation with user feedback
+- **Status Indicators** - Success/error messaging
+
+## 🚀 Live Demo
+
+Visit the live portfolio: [dobraidavid.com](#)
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **React 18** - Modern React with hooks
+- **Vite** - Fast build tool and dev server
+- **Lucide React** - Beautiful icons
+- **CSS3** - Custom animations and gradients

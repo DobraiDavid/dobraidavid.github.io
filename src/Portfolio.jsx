@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Github, ExternalLink, Code, Database, Brain, Leaf, Home, Mail, MapPin, ArrowRight, CheckCircle, ChevronLeft, ChevronRight, X, Send, User, MessageSquare} from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import { useSwipeable } from 'react-swipeable';
 
 const Portfolio = () => {
   const [activeSection, setActiveSection] = useState('hero');
@@ -594,19 +595,27 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects">
-        {projects.map((project, index) => (
+    {/* Projects Section */}
+    <section id="projects">
+      {projects.map((project, index) => {
+        const handlers = useSwipeable({
+          onSwipedLeft: () => nextImage(project.id),
+          onSwipedRight: () => prevImage(project.id),
+          preventDefaultTouchmoveEvent: true,
+          trackMouse: true,
+        });
+
+        return (
           <section
             key={project.id}
             id={`project-${project.id}`}
-            className="min-h-screen py-20 relative flex items-center"
+            className="min-h-screen relative flex items-center py-24 lg:py-0"
             style={{ scrollSnapAlign: 'start' }}
           >
-            <div className="w-full max-w-7xl mx-auto px-6">
-              <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 min-h-[70vh]`}>
+            <div className="w-full max-w-7xl mx-auto px-6 lg:px-0">
+              <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-24 min-h-[70vh]`}>
                 {/* Project Info */}
-                <div className="lg:w-2/5 space-y-8">
+                <div className="lg:w-3/5 space-y-8">
                   <div className="flex items-center space-x-4">
                     <div className={`p-4 bg-gradient-to-r ${project.color} rounded-xl`}>
                       {project.icon}
@@ -616,11 +625,11 @@ const Portfolio = () => {
                       <p className="text-cyan-400 font-semibold text-lg">{project.highlight}</p>
                     </div>
                   </div>
-                  
+
                   <p className="text-slate-300 text-xl leading-relaxed">
                     {project.description}
                   </p>
-                  
+
                   <div className="space-y-6">
                     <h4 className="text-xl font-semibold text-cyan-400">{language === 'en' ? 'Key Features:' : 'Főbb jellemzők:'}</h4>
                     <div className="grid grid-cols-1 gap-3">
@@ -632,7 +641,7 @@ const Portfolio = () => {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-3">
                     {project.tech.map((tech, idx) => (
                       <span key={idx} className="px-4 py-2 bg-slate-800 rounded-full text-base border border-slate-700 font-medium">
@@ -640,12 +649,13 @@ const Portfolio = () => {
                       </span>
                     ))}
                   </div>
-                  
-                  <div className="flex flex-wrap gap-6 pt-6">
+
+                  {/* Buttons*/}
+                  <div className="flex flex-col gap-6 pt-6">
                     {project.id === 3 ? (
                       <button 
                         onClick={openVideo}
-                        className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
+                        className="w-full inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
                       >
                         <ExternalLink className="w-5 h-5 mr-2" />
                         {language === 'en' ? 'Watch Demo Video' : 'Nézd meg a demót'}
@@ -655,7 +665,7 @@ const Portfolio = () => {
                         href={project.tryItUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
+                        className="w-full inline-flex justify-center items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg font-semibold text-white hover:shadow-2xl hover:shadow-cyan-500/25 transition-all duration-300 transform hover:scale-105 text-lg text-center"
                       >
                         <ExternalLink className="w-5 h-5 mr-2" />
                         {language === 'en' ? 'Try It Out' : 'Próbáld ki'}
@@ -666,40 +676,40 @@ const Portfolio = () => {
                       href={project.githubUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex-1 basis-[calc(50%-0.75rem)] sm:basis-auto inline-flex justify-center items-center px-8 py-4 bg-slate-800 border border-slate-600 rounded-lg font-semibold text-white hover:bg-slate-700 hover:border-slate-500 hover:shadow-xl transition-all duration-300 text-lg text-center"
+                      className="w-full inline-flex justify-center items-center px-8 py-4 bg-slate-800 border border-slate-600 rounded-lg font-semibold text-white hover:bg-slate-700 hover:border-slate-500 hover:shadow-xl transition-all duration-300 text-lg text-center"
                     >
                       <Github className="w-5 h-5 mr-2" />
                       {language === 'en' ? 'View on GitHub' : 'Nézd meg GitHub-on'}
                     </a>
                   </div>
                 </div>
-                
+
                 {/* Project Gallery */}
-                <div className="lg:w-3/5">
-                  <div className={`relative p-8 bg-gradient-to-br ${project.color} rounded-3xl shadow-2xl`}>
-                    <div className="bg-slate-900/90 backdrop-blur rounded-2xl p-8 relative overflow-hidden">
-                      <div className="relative w-full aspect-[2547/1616] h-full rounded-xl overflow-hidden group">
+                <div className="lg:w-full">
+                  <div className={`relative p-2 sm:border-0 bg-gradient-to-br ${project.color} rounded-lg sm:rounded-3xl shadow-2xl`}>
+                    <div className="bg-slate-900/90 backdrop-blur rounded-2xl p-2 sm:p-8 relative overflow-hidden">
+                      <div {...handlers} className="relative w-full aspect-[2547/1616] h-full rounded-xl overflow-hidden group">
                         <img 
                           src={project.images[activeImageIndex[project.id] || 0]}
                           alt={`${project.title} screenshot ${(activeImageIndex[project.id] || 0) + 1}`}
                           className="w-full h-full object-cover cursor-pointer transition-transform duration-500 group-hover:scale-110"
                           onClick={() => openModal(project.images[activeImageIndex[project.id] || 0])}
                         />
-                        
+
                         {/* Navigation arrows */}
                         <button
                           onClick={() => prevImage(project.id)}
-                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110"
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 transition-all duration-300 opacity-100 sm:opacity-0 group-hover:opacity-100 hover:scale-110"
                         >
                           <ChevronLeft className="w-6 h-6" />
                         </button>
                         <button
                           onClick={() => nextImage(project.id)}
-                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110"
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white rounded-full p-3 transition-all duration-300 opacity-100 sm:opacity-0 group-hover:opacity-100 hover:scale-110"
                         >
                           <ChevronRight className="w-6 h-6" />
                         </button>
-                        
+
                         {/* Image indicators */}
                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                           {project.images.map((_, imgIdx) => (
@@ -712,15 +722,15 @@ const Portfolio = () => {
                             />
                           ))}
                         </div>
-                        
+
                         {/* Overlay info */}
-                        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg px-3 py-2">
+                        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm rounded-lg px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <p className="text-white text-sm font-medium">
                             {(activeImageIndex[project.id] || 0) + 1} / {project.images.length}
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="mt-6 text-center">
                         <p className="text-slate-400 text-sm">
                           {language === 'en' ? 'Click image to view full size • Use arrows to navigate' : 'Kattints a képre a teljes méretű megtekintéshez • Használd a nyilakat a navigáláshoz'}
@@ -732,11 +742,12 @@ const Portfolio = () => {
               </div>
             </div>
           </section>
-        ))}
-      </section>
+        );
+      })}
+    </section>
 
       {/* Skills Section */}
-      <section id="skills" className="min-h-screen py-20 bg-slate-900/50 flex items-center" style={{ scrollSnapAlign: 'start' }}>
+      <section id="skills" className="min-h-screen py-20 bg-slate-900/50 flex items-center pt-24 md:pt-0" style={{ scrollSnapAlign: 'start' }}>
         <div className="w-full px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
             {t.skills.title}
@@ -761,7 +772,7 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen py-20 flex items-center relative overflow-hidden" style={{ scrollSnapAlign: 'start' }}>
+      <section id="contact" className="min-h-screen py-20 flex items-center relative overflow-hidden pt-24 md:pt-0" style={{ scrollSnapAlign: 'start' }}>
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-purple-900/90 to-slate-900/90"></div>
         <div className="relative w-full px-6">
           <div className="max-w-6xl mx-auto">
