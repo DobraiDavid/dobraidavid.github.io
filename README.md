@@ -32,7 +32,7 @@ A modern, responsive portfolio website built with React, featuring smooth animat
 
 ## 🚀 Live Demo
 
-Visit the live portfolio: [dobraidavid.com](#)
+Visit the live portfolio: <a href="https://dobraidavid.com" target="_blank">dobraidavid.com</a>
 
 ## 🛠️ Technology Stack
 
