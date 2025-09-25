@@ -3,14 +3,13 @@
 @tailwind utilities;
 
 
-/* globals.css or index.css */
 ::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;  
+  scrollbar-width: none;    
 }
 
 html {
@@ -20,4 +19,17 @@ html {
 section {
   min-height: 100vh;
   scroll-snap-align: start;
+}
+
+/* default: normal scrolling */
+.scroll-container {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+/* desktop only */
+@media (min-width: 768px) {
+  .scroll-container {
+    scroll-snap-type: y mandatory;
+  }
 }

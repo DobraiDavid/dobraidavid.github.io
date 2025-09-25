@@ -423,8 +423,7 @@ const Portfolio = () => {
   return (
     <div
       ref={scrollContainerRef}
-      className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden"
-      style={{ scrollSnapType: 'y mandatory', height: '100vh', overflowY: 'scroll' }}
+      className="scroll-container w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden"
     >
       {/* Image Modal */}
       {isModalOpen && (
